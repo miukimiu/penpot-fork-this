@@ -4,7 +4,7 @@ import Lyrics from "./components/lyrics";
 
 function App() {
   return (
-    <div className="app">
+    <div className="flex flex-col items-center text-marker">
       <CassetteTape />
       <Lyrics />
     </div>

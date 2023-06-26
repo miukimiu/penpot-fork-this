@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: "Permanent Marker", cursive;
+  }
+}
+
 body {
   background: linear-gradient(
     to bottom,
@@ -10,7 +20,6 @@ body {
 
 .app {
   text-align: center;
-  font-family: "Permanent Marker", cursive;
   min-height: 100vh;
   color: #1f1f1f;
 }
@@ -20,7 +29,7 @@ body {
   padding-top: 2em;
 }
 
-.letter {
+.lyrics {
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   margin: 26px auto 0;
@@ -30,22 +39,23 @@ body {
   position: relative;
   width: 80%;
 }
-.letter:before,
-.letter:after {
+.lyrics:before,
+.lyrics:after {
   content: "";
   height: 98%;
   position: absolute;
   width: 100%;
   z-index: -1;
 }
-.letter:before {
+.lyrics:before {
   background: #fafafa;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   left: -5px;
   top: 4px;
   transform: rotate(-2.5deg);
 }
-.letter:after {
+
+.lyrics:after {
   background: #f6f6f6;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
   right: -3px;

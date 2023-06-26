@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAudioPlayer } from "react-use-audio-player";
-import song from "../audio/Miuki_Miu-Fork_This.mp3";
+import song from "../audio/Miuki_Miu-Fork_This_(Penpot).mp3";
 import instrumental from "../audio/Miuki_Miu-Fork_This_(Instrumental_109bpm).mp3";
 import CassetteTapeControls from "./cassete-tape-controls";
 import CassetteTapeStickers from "./cassete-tape-stickers";

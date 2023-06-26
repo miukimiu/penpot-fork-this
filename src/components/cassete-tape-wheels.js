@@ -12,6 +12,19 @@ function CassetteTapeWheels({ isPlaying }) {
 
   return (
     <g id="shape-5ed15ab4-cca9-80f3-8002-b90944ef18c3">
+      <g id="shape-26bc264f-7554-808c-8002-b95a6b047bfb">
+        <rect
+          id="fills-26bc264f-7554-808c-8002-b95a6b047bfb"
+          width="135"
+          height="78"
+          x="1144.313"
+          y="433.5"
+          fill="#fff"
+          rx="10"
+          ry="10"
+          className="0"
+        ></rect>
+      </g>
       <g id="shape-fa0af8d2-a9e4-8066-8002-b4b1e6e8754c">
         <path
           id="fills-fa0af8d2-a9e4-8066-8002-b4b1e6e8754c"
