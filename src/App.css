@@ -25,8 +25,10 @@ body {
 }
 
 #cassette-tape {
-  /* center the tape */
   padding-top: 2em;
+  width: 100%;
+  height: auto;
+  max-width: 655px;
 }
 
 .lyrics {
@@ -35,30 +37,37 @@ body {
   margin: 26px auto 0;
   max-width: 550px;
   min-height: 300px;
-  padding: 24px;
+  padding: 32px;
   position: relative;
-  width: 80%;
-}
-.lyrics:before,
-.lyrics:after {
-  content: "";
-  height: 98%;
-  position: absolute;
   width: 100%;
-  z-index: -1;
-}
-.lyrics:before {
-  background: #fafafa;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-  left: -5px;
-  top: 4px;
-  transform: rotate(-2.5deg);
 }
 
-.lyrics:after {
-  background: #f6f6f6;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-  right: -3px;
-  top: 1px;
-  transform: rotate(1.4deg);
+/* 
+Stacked paper effect only for larger screens
+*/
+@media screen and (min-width: 500px) {
+  .lyrics:before,
+  .lyrics:after {
+    content: "";
+    height: 98%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+  }
+  .lyrics:before {
+    background: #fefefe;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+
+    left: -5px;
+    top: 4px;
+    transform: rotate(-2.5deg);
+  }
+
+  .lyrics:after {
+    background: #fefefe;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    right: -3px;
+    top: 1px;
+    transform: rotate(1.4deg);
+  }
 }

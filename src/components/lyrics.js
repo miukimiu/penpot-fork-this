@@ -1,8 +1,8 @@
 const Lyrics = () => {
   return (
     <div className="lyrics text-slate-800">
-      <div className="flex flex-col gap-8 text-xl pb-2">
-        <h3 className="text-fuchsia-400 underline underline-offset-8 decoration-4 decoration-fuchsia-400/80 inline-flex mb-3 -skew-y-3 text-2xl">
+      <div className="flex flex-col gap-8 pb-2 text-xl">
+        <h3 className="inline-flex mb-3 text-2xl underline -skew-y-3 text-fuchsia-400 underline-offset-8 decoration-4 decoration-fuchsia-400/80">
           Lyrics
         </h3>
         <p>
@@ -38,7 +38,7 @@ const Lyrics = () => {
         </p>
 
         <p className="text-violet-800">
-          <span className="text-fuchsia-400 underline underline-offset-8 decoration-4 decoration-fuchsia-400/80 inline-flex mb-3 -skew-y-3">
+          <span className="inline-flex mb-3 underline -skew-y-3 text-fuchsia-400 underline-offset-8 decoration-4 decoration-fuchsia-400/80">
             Chorus 2x
           </span>
           <br />
@@ -82,7 +82,7 @@ const Lyrics = () => {
         </p>
 
         <p className="text-violet-800">
-          <span className="text-fuchsia-400 underline underline-offset-8 decoration-4 decoration-fuchsia-400/80 inline-flex mb-3 -skew-y-3">
+          <span className="inline-flex mb-3 underline -skew-y-3 text-fuchsia-400 underline-offset-8 decoration-4 decoration-fuchsia-400/80">
             Chorus 2x
           </span>
           <br />
