@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import ok from "../audio/ok.wav";
 import song from "../audio/Miuki_Miu-Fork_This_(Penpot).mp3";
 import instrumental from "../audio/Miuki_Miu-Fork_This-Instrumental_(Penpot).mp3";
 import karaoke from "../audio/Miuki_Miu-Fork_This-Karaoke_(Penpot).mp3";
@@ -9,6 +10,11 @@ import CassetteTapeBg from "./cassete-tape-bg";
 import CassetteTapeCircles from "./cassete-tape-circles";
 
 const playlist = [
+  {
+    title: "OK",
+    artist: "Miuki Miu",
+    src: ok,
+  },
   {
     title: "Fork This",
     artist: "Miuki Miu",
@@ -26,145 +32,161 @@ const playlist = [
   },
 ];
 
+const cassetteVariants = {
+  playing: {
+    rx: 100,
+    ry: 100,
+    transition: {
+      duration: 0.5,
+      repeat: Infinity,
+      type: "spring",
+      bounce: 0.25,
+    },
+  },
+  paused: {
+    rx: 90.5,
+    ry: 90.5,
+    transition: {
+      duration: 0.3,
+    },
+  },
+};
+
 function CassetteTape() {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
-  const audioRef = useRef(null);
-  const analyserRef = useRef(null);
-  const animationRef = useRef(null);
-  const circleRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [ellipseRadius, setEllipseRadius] = useState(90.5);
+
+  const audioRef = useRef();
+  const source = useRef();
+  const analyzer = useRef();
+  const animationController = useRef();
 
   useEffect(() => {
-    audioRef.current = new Audio();
+    const handleAudioPlay = () => {
+      console.log("handleAudioPlay");
+      let audioContext = new AudioContext();
+      if (!source.current) {
+        source.current = audioContext.createMediaElementSource(
+          audioRef.current
+        );
+        analyzer.current = audioContext.createAnalyser();
+        source.current.connect(analyzer.current);
+        analyzer.current.connect(audioContext.destination);
+      }
 
-    const audioElement = audioRef.current;
-    audioElement.src = playlist[currentTrack].src;
-
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-    analyserRef.current = audioContext.createAnalyser();
-    const audioSource = audioContext.createMediaElementSource(audioElement);
-
-    audioSource.connect(analyserRef.current);
-    audioSource.connect(audioContext.destination);
-
-    const bufferLength = analyserRef.current.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const animateCircle = () => {
-      analyserRef.current.getByteFrequencyData(dataArray);
-      const average = calculateAverage(dataArray);
-
-      // Update the circle's radius based on the audio data
-      const radius = average / 2;
-      circleRef.current.setAttribute("r", radius.toString());
-
-      animationRef.current = requestAnimationFrame(animateCircle);
+      console.log({ source, analyzer });
+      visualizeData();
     };
 
-    animateCircle();
+    audioRef.current.addEventListener("play", handleAudioPlay);
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
-      audioSource.disconnect();
-      analyserRef.current.disconnect();
-      audioRef.current.src = "";
+      audioRef.current.removeEventListener("play", handleAudioPlay);
+      cancelAnimationFrame(animationController.current);
     };
-  }, [currentTrack]);
+  }, []);
+
+  const visualizeData = () => {
+    animationController.current = requestAnimationFrame(visualizeData);
+
+    if (audioRef.current.paused) {
+      cancelAnimationFrame(animationController.current);
+      return;
+    }
+
+    const songData = new Uint8Array(140);
+    analyzer.current.getByteFrequencyData(songData);
+
+    const average = getAverage(songData);
+
+    console.log("average:", average);
+
+    const radius = 90.5 + average * 0.1;
+
+    setEllipseRadius(radius);
+  };
+
+  const getAverage = (dataArray) => {
+    const sum = dataArray.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    const average = sum / dataArray.length;
+    return average;
+  };
 
   const togglePlayPause = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch((error) => {
-        console.log("Play error:", error);
-      });
-    }
     setIsPlaying((prevIsPlaying) => !prevIsPlaying);
-  };
-
-  const playNextTrack = () => {
-    setCurrentTrack((prevTrack) => (prevTrack + 1) % playlist.length);
-  };
-
-  const playPrevTrack = () => {
-    setCurrentTrack((prevTrack) =>
-      prevTrack === 0 ? playlist.length - 1 : prevTrack - 1
-    );
-  };
-
-  useEffect(() => {
-    if (isPlaying) {
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+    } else {
       audioRef.current.pause();
-      audioRef.current = new Audio(playlist[currentTrack].src);
-      audioRef.current.play().catch((error) => {
-        console.log("Play error:", error);
-      });
     }
-  }, [currentTrack, isPlaying]);
+  };
 
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     audioRef.current.play().catch((error) => {
-  //       console.log("Play error:", error);
-  //     });
-  //   } else {
-  //     audioRef.current.pause();
-  //   }
-  // }, [isPlaying]);
+  const playTrack = (trackIndex) => {
+    setCurrentTrack(trackIndex);
+    audioRef.current.src = playlist[trackIndex].src;
+    audioRef.current.play();
+    setIsPlaying(true);
+  };
 
-  const calculateAverage = (dataArray) => {
-    let sum = 0;
-    for (let i = 0; i < dataArray.length; i++) {
-      sum += dataArray[i];
+  const nextTrack = () => {
+    const nextIndex = (currentTrack + 1) % playlist.length;
+    if (isPlaying) {
+      playTrack(nextIndex);
+    } else {
+      setCurrentTrack(nextIndex);
     }
-    return sum / dataArray.length;
+  };
+
+  const prevTrack = () => {
+    const prevIndex = (currentTrack - 1 + playlist.length) % playlist.length;
+    if (isPlaying) {
+      playTrack(prevIndex);
+    } else {
+      setCurrentTrack(prevIndex);
+    }
   };
 
   return (
-    // <div>
-    //   <button onClick={togglePlayPause}>{isPlaying ? "Pause" : "Play"}</button>
-    //   <br />
-    //   <button onClick={playNextTrack}>Next</button>
-    //   <br />
-    //   <button onClick={playPrevTrack}>Previous</button>
-    //   <br />
-    //   {playlist[currentTrack].artist} - {playlist[currentTrack].title}
-    //   <svg width="200" height="200">
-    //     <circle ref={circleRef} cx="100" cy="100" r="50" fill="red" />
-    //   </svg>
-    // </div>
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        id="cassette-tape"
+        width="655"
+        height="442"
+        fill="none"
+        style={{ WebkitPrintColorAdjust: "exact" }}
+        version="1.1"
+        viewBox="884 271 655 442"
+      >
+        <style data-loading="true"></style>
+        <CassetteTapeBg />
+        <CassetteTapeCircles
+          variants={cassetteVariants}
+          initial="paused"
+          animate={isPlaying ? "playing" : "paused"}
+          isPlaying={isPlaying}
+          audioRef={audioRef}
+          ellipseRadius={ellipseRadius}
+        />
+        <CassetteTapeStickers
+          title={`${playlist[currentTrack].artist} - ${playlist[currentTrack].title}`}
+        />
 
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      id="cassette-tape"
-      width="655"
-      height="442"
-      fill="none"
-      style={{ WebkitPrintColorAdjust: "exact" }}
-      version="1.1"
-      viewBox="884 271 655 442"
-    >
-      <style data-loading="true"></style>
-      <CassetteTapeBg />
-      <CassetteTapeCircles />
-      <CassetteTapeStickers
-        title={`${playlist[currentTrack].artist} - ${playlist[currentTrack].title}`}
-      />
+        <CassetteTapeWheels isPlaying={isPlaying} />
 
-      <CassetteTapeWheels isPlaying={isPlaying} />
-
-      <CassetteTapeControls
-        nextTrack={playNextTrack}
-        prevTrack={playPrevTrack}
-        isPlaying={isPlaying}
-        togglePlayPause={togglePlayPause}
-      />
-
-      <svg width="200" height="200">
-        <circle ref={circleRef} cx="100" cy="100" r="50" fill="red" />
+        <CassetteTapeControls
+          nextTrack={nextTrack}
+          prevTrack={prevTrack}
+          isPlaying={isPlaying}
+          togglePlayPause={togglePlayPause}
+        />
       </svg>
-    </svg>
+      <audio ref={audioRef} controls />
+    </>
   );
 }
 

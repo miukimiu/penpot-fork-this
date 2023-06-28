@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 
-function CassetteTapeStickers() {
+function CassetteTapeCircles({
+  isPlaying,
+  animate,
+  initial,
+  variants,
+  ellipseRadius,
+}) {
+  const radius = "90.5";
+
+  const animation = isPlaying ? ellipseRadius : radius;
+
   return (
     <g>
       <g>
@@ -21,8 +32,8 @@ function CassetteTapeStickers() {
             cx="1332.5"
             cy="473.5"
             fill="#7fbfef"
-            rx="90.5"
-            ry="90.5"
+            rx={animation}
+            ry={radius}
             className="0"
           ></ellipse>
         </g>
@@ -31,8 +42,8 @@ function CassetteTapeStickers() {
             cx="1090.5"
             cy="473.5"
             fill="#7fbfef"
-            rx="90.5"
-            ry="90.5"
+            rx={animation}
+            ry={radius}
             className="0"
           ></ellipse>
         </g>
@@ -41,4 +52,4 @@ function CassetteTapeStickers() {
   );
 }
 
-export default CassetteTapeStickers;
+export default CassetteTapeCircles;
