@@ -169,24 +169,24 @@ function CassetteTape() {
         viewBox="884 271 655 442"
       >
         <style data-loading="true"></style>
-        {/* <CassetteTapeBackground /> */}
-        <CassetteTapeCircles
+        <CassetteTapeBackground />
+        {/* <CassetteTapeCircles
           isPlaying={isPlaying}
           initialRadius={initialRadius}
           ellipseRadius={ellipseRadius}
-        />
-        <CassetteTapeSticker
+        /> */}
+        {/* <CassetteTapeSticker
           title={`${playlist[currentTrack].artist} - ${playlist[currentTrack].title}`}
-        />
+        /> */}
 
         {/* <CassetteTapeWheels isPlaying={isPlaying} /> */}
 
-        <CassetteTapeControls
+        {/* <CassetteTapeControls
           nextTrack={nextTrack}
           prevTrack={prevTrack}
           isPlaying={isPlaying}
           togglePlayPause={togglePlayPause}
-        />
+        /> */}
       </svg>
       <audio ref={audioRef} />
     </>
