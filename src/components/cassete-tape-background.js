@@ -1,6 +1,6 @@
 import React from "react";
 
-function CassetteTapeBg({ nextTrack, prevTrack, isPlaying, togglePlayPause }) {
+function CassetteTapeBackground() {
   return (
     <g>
       <g>
@@ -265,4 +265,4 @@ function CassetteTapeBg({ nextTrack, prevTrack, isPlaying, togglePlayPause }) {
   );
 }
 
-export default CassetteTapeBg;
+export default CassetteTapeBackground;

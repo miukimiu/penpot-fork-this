@@ -1,6 +1,6 @@
 import React from "react";
 
-function CassetteTapeStickers({ title }) {
+function CassetteTapeSticker({ title }) {
   return (
     <g id="shape-fa0af8d2-a9e4-8066-8002-b4ac041beefa">
       <g id="shape-fa0af8d2-a9e4-8066-8002-b4b395862a8b">
@@ -231,4 +231,4 @@ function CassetteTapeStickers({ title }) {
   );
 }
 
-export default CassetteTapeStickers;
+export default CassetteTapeSticker;

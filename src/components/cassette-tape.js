@@ -4,9 +4,9 @@ import song from "../audio/Miuki_Miu-Fork_This_(Penpot).mp3";
 import instrumental from "../audio/Miuki_Miu-Fork_This-Instrumental_(Penpot).mp3";
 import karaoke from "../audio/Miuki_Miu-Fork_This-Karaoke_(Penpot).mp3";
 import CassetteTapeControls from "./cassete-tape-controls";
-import CassetteTapeStickers from "./cassete-tape-stickers";
+import CassetteTapeSticker from "./cassete-tape-sticker";
 import CassetteTapeWheels from "./cassete-tape-wheels";
-import CassetteTapeBg from "./cassete-tape-bg";
+import CassetteTapeBackground from "./cassete-tape-background";
 import CassetteTapeCircles from "./cassete-tape-circles";
 
 const playlist = [
@@ -31,6 +31,26 @@ const playlist = [
     src: instrumental,
   },
 ];
+
+const cassetteVariants = {
+  playing: {
+    rx: 100,
+    ry: 100,
+    transition: {
+      duration: 0.5,
+      repeat: Infinity,
+      type: "spring",
+      bounce: 0.25,
+    },
+  },
+  paused: {
+    rx: 90.5,
+    ry: 90.5,
+    transition: {
+      duration: 0.3,
+    },
+  },
+};
 
 function CassetteTape() {
   const [currentTrack, setCurrentTrack] = useState(0);
@@ -61,11 +81,9 @@ function CassetteTape() {
     };
 
     audioRef.current.addEventListener("play", handleAudioPlay);
-    audioRef.current.addEventListener("ended", handleAudioEnd);
 
     return () => {
       audioRef.current.removeEventListener("play", handleAudioPlay);
-      audioRef.current.removeEventListener("ended", handleAudioEnd);
       cancelAnimationFrame(animationController.current);
     };
   }, []);
@@ -99,18 +117,6 @@ function CassetteTape() {
     return average;
   };
 
-  const togglePlayPause = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(console.error);
-    }
-  };
-
   const playTrack = (trackIndex) => {
     setCurrentTrack(trackIndex);
     audioRef.current.src = playlist[trackIndex].src;
@@ -118,18 +124,22 @@ function CassetteTape() {
     setIsPlaying(true);
   };
 
-  const handleAudioEnd = () => {
-    const nextIndex = (currentTrack + 1) % playlist.length;
-    playTrack(nextIndex);
+  const togglePlayPause = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      const currentTrackIndex = currentTrack % playlist.length;
+      playTrack(currentTrackIndex);
+    }
   };
 
   const nextTrack = () => {
     const nextIndex = (currentTrack + 1) % playlist.length;
-
-    if (!isPlaying) {
-      setCurrentTrack(nextIndex);
-    } else {
+    if (isPlaying) {
       playTrack(nextIndex);
+    } else {
+      setCurrentTrack(nextIndex);
     }
   };
 
@@ -155,20 +165,20 @@ function CassetteTape() {
         viewBox="884 271 655 442"
       >
         <style data-loading="true"></style>
-        <CassetteTapeBg />
+        <CassetteTapeBackground />
         <CassetteTapeCircles
           isPlaying={isPlaying}
           initialRadius={initialRadius}
           ellipseRadius={ellipseRadius}
         />
-        <CassetteTapeStickers
+        <CassetteTapeSticker
           title={`${playlist[currentTrack].artist} - ${playlist[currentTrack].title}`}
         />
 
         <CassetteTapeWheels isPlaying={isPlaying} />
 
         <CassetteTapeControls
-          nextTrack={nextTrack} // Automatically play next track on audio end
+          nextTrack={nextTrack}
           prevTrack={prevTrack}
           isPlaying={isPlaying}
           togglePlayPause={togglePlayPause}

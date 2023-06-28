@@ -6,6 +6,7 @@ function CassetteTapeControls({
   isPlaying,
   togglePlayPause,
 }) {
+  console.log({ nextTrack, prevTrack, isPlaying, togglePlayPause });
   return (
     <>
       <g id="next-btn" fill="#000" onClick={nextTrack}>

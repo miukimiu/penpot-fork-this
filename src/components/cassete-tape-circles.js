@@ -24,7 +24,7 @@ function CassetteTapeCircles({ isPlaying, initialRadius, ellipseRadius }) {
             cy="473.5"
             fill="#7fbfef"
             rx={animation}
-            ry={initialRadius}
+            ry={animation}
             className="0"
           ></ellipse>
         </g>
@@ -34,7 +34,7 @@ function CassetteTapeCircles({ isPlaying, initialRadius, ellipseRadius }) {
             cy="473.5"
             fill="#7fbfef"
             rx={animation}
-            ry={initialRadius}
+            ry={animation}
             className="0"
           ></ellipse>
         </g>
