@@ -29,8 +29,8 @@ const playlist = [
 function CassetteTape() {
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [ellipseRadius, setEllipseRadius] = useState(90.5);
-  const initialRadius = 90.5;
+  const initialRadius = 80;
+  const [ellipseRadius, setEllipseRadius] = useState(initialRadius);
 
   const audioRef = useRef();
   const source = useRef();
@@ -75,7 +75,7 @@ function CassetteTape() {
     const average = getAverage(songData);
 
     let radius = initialRadius + average * 0.1;
-    radius = Math.min(radius, 100.5); // Limit radius to a maximum of 100
+    // radius = Math.min(radius, 100.5); // Limit radius to a maximum of 100
 
     setEllipseRadius(radius);
   };
@@ -169,7 +169,7 @@ function CassetteTape() {
         viewBox="884 271 655 442"
       >
         <style data-loading="true"></style>
-        <CassetteTapeBackground />
+        {/* <CassetteTapeBackground /> */}
         <CassetteTapeCircles
           isPlaying={isPlaying}
           initialRadius={initialRadius}
@@ -179,7 +179,7 @@ function CassetteTape() {
           title={`${playlist[currentTrack].artist} - ${playlist[currentTrack].title}`}
         />
 
-        <CassetteTapeWheels isPlaying={isPlaying} />
+        {/* <CassetteTapeWheels isPlaying={isPlaying} /> */}
 
         <CassetteTapeControls
           nextTrack={nextTrack}
