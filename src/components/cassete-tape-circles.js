@@ -1,16 +1,7 @@
-import React, { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 
-function CassetteTapeCircles({
-  isPlaying,
-  animate,
-  initial,
-  variants,
-  ellipseRadius,
-}) {
-  const radius = "90.5";
-
-  const animation = isPlaying ? ellipseRadius : radius;
+function CassetteTapeCircles({ isPlaying, initialRadius, ellipseRadius }) {
+  const animation = isPlaying ? ellipseRadius : initialRadius;
 
   return (
     <g>
@@ -33,7 +24,7 @@ function CassetteTapeCircles({
             cy="473.5"
             fill="#7fbfef"
             rx={animation}
-            ry={radius}
+            ry={initialRadius}
             className="0"
           ></ellipse>
         </g>
@@ -43,7 +34,7 @@ function CassetteTapeCircles({
             cy="473.5"
             fill="#7fbfef"
             rx={animation}
-            ry={radius}
+            ry={initialRadius}
             className="0"
           ></ellipse>
         </g>

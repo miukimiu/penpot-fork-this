@@ -56,6 +56,7 @@ function CassetteTape() {
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [ellipseRadius, setEllipseRadius] = useState(90.5);
+  const initialRadius = 90.5;
 
   const audioRef = useRef();
   const source = useRef();
@@ -102,7 +103,7 @@ function CassetteTape() {
 
     console.log("average:", average);
 
-    const radius = 90.5 + average * 0.1;
+    const radius = initialRadius + average * 0.1;
 
     setEllipseRadius(radius);
   };
@@ -117,11 +118,14 @@ function CassetteTape() {
   };
 
   const togglePlayPause = () => {
-    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
-    if (audioRef.current.paused) {
-      audioRef.current.play();
-    } else {
+    if (isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(console.error);
     }
   };
 
@@ -165,11 +169,8 @@ function CassetteTape() {
         <style data-loading="true"></style>
         <CassetteTapeBg />
         <CassetteTapeCircles
-          variants={cassetteVariants}
-          initial="paused"
-          animate={isPlaying ? "playing" : "paused"}
           isPlaying={isPlaying}
-          audioRef={audioRef}
+          initialRadius={initialRadius}
           ellipseRadius={ellipseRadius}
         />
         <CassetteTapeStickers
@@ -185,7 +186,7 @@ function CassetteTape() {
           togglePlayPause={togglePlayPause}
         />
       </svg>
-      <audio ref={audioRef} controls />
+      <audio ref={audioRef} />
     </>
   );
 }
