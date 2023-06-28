@@ -32,26 +32,6 @@ const playlist = [
   },
 ];
 
-const cassetteVariants = {
-  playing: {
-    rx: 100,
-    ry: 100,
-    transition: {
-      duration: 0.5,
-      repeat: Infinity,
-      type: "spring",
-      bounce: 0.25,
-    },
-  },
-  paused: {
-    rx: 90.5,
-    ry: 90.5,
-    transition: {
-      duration: 0.3,
-    },
-  },
-};
-
 function CassetteTape() {
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -81,9 +61,11 @@ function CassetteTape() {
     };
 
     audioRef.current.addEventListener("play", handleAudioPlay);
+    audioRef.current.addEventListener("ended", handleAudioEnd);
 
     return () => {
       audioRef.current.removeEventListener("play", handleAudioPlay);
+      audioRef.current.removeEventListener("ended", handleAudioEnd);
       cancelAnimationFrame(animationController.current);
     };
   }, []);
@@ -136,12 +118,18 @@ function CassetteTape() {
     setIsPlaying(true);
   };
 
+  const handleAudioEnd = () => {
+    const nextIndex = (currentTrack + 1) % playlist.length;
+    playTrack(nextIndex);
+  };
+
   const nextTrack = () => {
     const nextIndex = (currentTrack + 1) % playlist.length;
-    if (isPlaying) {
-      playTrack(nextIndex);
-    } else {
+
+    if (!isPlaying) {
       setCurrentTrack(nextIndex);
+    } else {
+      playTrack(nextIndex);
     }
   };
 
@@ -180,7 +168,7 @@ function CassetteTape() {
         <CassetteTapeWheels isPlaying={isPlaying} />
 
         <CassetteTapeControls
-          nextTrack={nextTrack}
+          nextTrack={nextTrack} // Automatically play next track on audio end
           prevTrack={prevTrack}
           isPlaying={isPlaying}
           togglePlayPause={togglePlayPause}
