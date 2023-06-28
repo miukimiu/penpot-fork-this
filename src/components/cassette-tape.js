@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import sfx from "../audio/sfx.wav";
 import song from "../audio/Miuki_Miu-Fork_This_(Penpot).mp3";
 import instrumental from "../audio/Miuki_Miu-Fork_This-Instrumental_(Penpot).mp3";
 import karaoke from "../audio/Miuki_Miu-Fork_This-Karaoke_(Penpot).mp3";
