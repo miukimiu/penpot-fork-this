@@ -61,6 +61,16 @@ const Lyrics = () => {
         </p>
 
         <p>
+          Yeah, open source queen
+          <br />
+          Old school girl, coding with VIM
+          <br />
+          Git hub stars, git hub queen
+          <br />
+          Feeling it, feeling it, changing the scene
+        </p>
+
+        <p>
           I’m an old school girl, hi5
           <br />
           Sonic and Tails, Megadrive
