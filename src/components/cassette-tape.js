@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import ok from "../audio/ok.wav";
+import sfx from "../audio/sfx.wav";
 import song from "../audio/Miuki_Miu-Fork_This_(Penpot).mp3";
 import instrumental from "../audio/Miuki_Miu-Fork_This-Instrumental_(Penpot).mp3";
 import karaoke from "../audio/Miuki_Miu-Fork_This-Karaoke_(Penpot).mp3";
@@ -10,11 +10,6 @@ import CassetteTapeBackground from "./cassete-tape-background";
 import CassetteTapeCircles from "./cassete-tape-circles";
 
 const playlist = [
-  {
-    title: "OK",
-    artist: "Miuki Miu",
-    src: ok,
-  },
   {
     title: "Fork This",
     artist: "Miuki Miu",
@@ -32,26 +27,6 @@ const playlist = [
   },
 ];
 
-const cassetteVariants = {
-  playing: {
-    rx: 100,
-    ry: 100,
-    transition: {
-      duration: 0.5,
-      repeat: Infinity,
-      type: "spring",
-      bounce: 0.25,
-    },
-  },
-  paused: {
-    rx: 90.5,
-    ry: 90.5,
-    transition: {
-      duration: 0.3,
-    },
-  },
-};
-
 function CassetteTape() {
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -65,7 +40,6 @@ function CassetteTape() {
 
   useEffect(() => {
     const handleAudioPlay = () => {
-      console.log("handleAudioPlay");
       let audioContext = new AudioContext();
       if (!source.current) {
         source.current = audioContext.createMediaElementSource(
@@ -101,9 +75,8 @@ function CassetteTape() {
 
     const average = getAverage(songData);
 
-    console.log("average:", average);
-
-    const radius = initialRadius + average * 0.1;
+    let radius = initialRadius + average * 0.1;
+    radius = Math.min(radius, 100.5); // Limit radius to a maximum of 100
 
     setEllipseRadius(radius);
   };
@@ -151,6 +124,38 @@ function CassetteTape() {
       setCurrentTrack(prevIndex);
     }
   };
+
+  useEffect(() => {
+    const handleAudioPlay = () => {
+      console.log("handleAudioPlay");
+      let audioContext = new AudioContext();
+      if (!source.current) {
+        source.current = audioContext.createMediaElementSource(
+          audioRef.current
+        );
+        analyzer.current = audioContext.createAnalyser();
+        source.current.connect(analyzer.current);
+        analyzer.current.connect(audioContext.destination);
+      }
+
+      console.log({ source, analyzer });
+      visualizeData();
+    };
+
+    const handleAudioEnd = () => {
+      const nextIndex = (currentTrack + 1) % playlist.length;
+      playTrack(nextIndex);
+    };
+
+    audioRef.current.addEventListener("play", handleAudioPlay);
+    audioRef.current.addEventListener("ended", handleAudioEnd);
+
+    return () => {
+      audioRef.current.removeEventListener("play", handleAudioPlay);
+      audioRef.current.removeEventListener("ended", handleAudioEnd);
+      cancelAnimationFrame(animationController.current);
+    };
+  }, [currentTrack]);
 
   return (
     <>
