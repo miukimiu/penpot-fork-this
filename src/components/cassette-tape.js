@@ -7,6 +7,7 @@ import CassetteTapeSticker from "./cassete-tape-sticker";
 import CassetteTapeWheels from "./cassete-tape-wheels";
 import CassetteTapeBackground from "./cassete-tape-background";
 import CassetteTapeCircles from "./cassete-tape-circles";
+import LyricVisualizer from "./lyric-visualizer";
 
 const playlist = [
   {
@@ -31,6 +32,7 @@ function CassetteTape() {
   const [isPlaying, setIsPlaying] = useState(false);
   const initialRadius = 80;
   const [ellipseRadius, setEllipseRadius] = useState(initialRadius);
+  const [audioCtx, setAudioCtx] = useState(null);
 
   const audioRef = useRef();
   const source = useRef();
@@ -49,7 +51,6 @@ function CassetteTape() {
         analyzer.current.connect(audioContext.destination);
       }
 
-      console.log({ source, analyzer });
       visualizeData();
     };
 
@@ -128,6 +129,7 @@ function CassetteTape() {
     const handleAudioPlay = () => {
       console.log("handleAudioPlay");
       let audioContext = new AudioContext();
+      setAudioCtx(audioContext)
       if (!source.current) {
         source.current = audioContext.createMediaElementSource(
           audioRef.current
@@ -189,6 +191,9 @@ function CassetteTape() {
         />
       </svg>
       <audio ref={audioRef} />
+      <LyricVisualizer 
+      audioContext={audioCtx} 
+      ellipseRadius={ellipseRadius}/>
     </>
   );
 }
