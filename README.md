@@ -1,6 +1,6 @@
 # Penpot Fork This Demo
 
-![Penpot Fork This Demo](demo.png)
+![Penpot Fork This Demo](/public/cassette.png)
 
 This repository contains a demo built with SVG and ReactJS, showcasing a cassette tape with three different MP3 tracks titled "Fork This". The project is open source and provides an interactive demonstration of how to use SVG and ReactJS together. The demo was presented during the Penpot Fest 2023.
 
