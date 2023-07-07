@@ -32,7 +32,6 @@ function CassetteTape() {
   const [isPlaying, setIsPlaying] = useState(false);
   const initialRadius = 80;
   const [ellipseRadius, setEllipseRadius] = useState(initialRadius);
-  const [audioCtx, setAudioCtx] = useState(null);
 
   const audioRef = useRef();
   const source = useRef();
@@ -129,7 +128,7 @@ function CassetteTape() {
     const handleAudioPlay = () => {
       console.log("handleAudioPlay");
       let audioContext = new AudioContext();
-      setAudioCtx(audioContext)
+
       if (!source.current) {
         source.current = audioContext.createMediaElementSource(
           audioRef.current
@@ -157,6 +156,9 @@ function CassetteTape() {
       cancelAnimationFrame(animationController.current);
     };
   }, [currentTrack]);
+
+  const currentTime = audioRef.current && audioRef.current.currentTime;
+  const duration = audioRef.current && audioRef.current.duration;
 
   return (
     <>
@@ -191,9 +193,11 @@ function CassetteTape() {
         />
       </svg>
       <audio ref={audioRef} />
-      <LyricVisualizer 
-      audioContext={audioCtx} 
-      ellipseRadius={ellipseRadius}/>
+      <LyricVisualizer
+        currentTime={currentTime}
+        ellipseRadius={ellipseRadius}
+        duration={duration}
+      />
     </>
   );
 }

@@ -9,7 +9,6 @@ function App() {
       <Header />
       <div className="flex flex-col items-center px-8 pt-8 pb-24 text-marker">
         <CassetteTape />
-        <Lyrics />
       </div>
     </>
   );
