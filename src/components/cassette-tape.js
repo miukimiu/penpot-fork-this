@@ -7,6 +7,7 @@ import CassetteTapeSticker from "./cassete-tape-sticker";
 import CassetteTapeWheels from "./cassete-tape-wheels";
 import CassetteTapeBackground from "./cassete-tape-background";
 import CassetteTapeCircles from "./cassete-tape-circles";
+import LyricVisualizer from "./lyric-visualizer";
 
 const playlist = [
   {
@@ -49,7 +50,6 @@ function CassetteTape() {
         analyzer.current.connect(audioContext.destination);
       }
 
-      console.log({ source, analyzer });
       visualizeData();
     };
 
@@ -128,6 +128,7 @@ function CassetteTape() {
     const handleAudioPlay = () => {
       console.log("handleAudioPlay");
       let audioContext = new AudioContext();
+
       if (!source.current) {
         source.current = audioContext.createMediaElementSource(
           audioRef.current
@@ -155,6 +156,9 @@ function CassetteTape() {
       cancelAnimationFrame(animationController.current);
     };
   }, [currentTrack]);
+
+  const currentTime = audioRef.current && audioRef.current.currentTime;
+  const duration = audioRef.current && audioRef.current.duration;
 
   return (
     <>
@@ -189,6 +193,11 @@ function CassetteTape() {
         />
       </svg>
       <audio ref={audioRef} />
+      <LyricVisualizer
+        currentTime={currentTime}
+        ellipseRadius={ellipseRadius}
+        duration={duration}
+      />
     </>
   );
 }
