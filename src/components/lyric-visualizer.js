@@ -43,8 +43,6 @@ function findLyricByTime(currentTime, duration) {
     }
   });
 
-  console.log(lyricsWithEndTime);
-
   currentTime = Number(currentTime);
 
   for (var i = 0; i < lyrics.length; i++) {

@@ -126,7 +126,6 @@ function CassetteTape() {
 
   useEffect(() => {
     const handleAudioPlay = () => {
-      console.log("handleAudioPlay");
       let audioContext = new AudioContext();
 
       if (!source.current) {
@@ -138,7 +137,6 @@ function CassetteTape() {
         analyzer.current.connect(audioContext.destination);
       }
 
-      console.log({ source, analyzer });
       visualizeData();
     };
 
