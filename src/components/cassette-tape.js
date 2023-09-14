@@ -40,11 +40,15 @@ function CassetteTape() {
 
   useEffect(() => {
     const handleAudioPlay = () => {
+      // 1. AudioContext: The code creates an AudioContext object, which is a fundamental component of the Web Audio API. This context is used to manage and control audio sources, effects, and more.
       let audioContext = new AudioContext();
       if (!source.current) {
+        // 2 .MediaElementSource: The code sets up an audio source using createMediaElementSource(). This method is part of the Web Audio API and is used to create a media element source node from an HTML audio or video element. In this case, it's used to create an audio source from the audioRef element.
         source.current = audioContext.createMediaElementSource(
           audioRef.current
         );
+
+        // 3. AnalyserNode: An AnalyserNode is created to analyze the audio data and extract frequency data. It's connected to the audio source.
         analyzer.current = audioContext.createAnalyser();
         source.current.connect(analyzer.current);
         analyzer.current.connect(audioContext.destination);
@@ -69,6 +73,7 @@ function CassetteTape() {
       return;
     }
 
+    // 4. Visualizing Audio Data: The visualizeData() function is called in a loop using requestAnimationFrame(). It extracts frequency data using getByteFrequencyData() from the AnalyserNode and updates some visual effects based on this data.
     const songData = new Uint8Array(140);
     analyzer.current.getByteFrequencyData(songData);
 
@@ -145,6 +150,7 @@ function CassetteTape() {
       playTrack(nextIndex);
     };
 
+    // 5. Event Listeners: Event listeners are added to the audio element to handle events such as "play" and "ended." These event listeners are used to trigger certain actions related to audio playback.
     audioRef.current.addEventListener("play", handleAudioPlay);
     audioRef.current.addEventListener("ended", handleAudioEnd);
 
