@@ -33,7 +33,9 @@ export const LyricVisualizer: React.FC<LyricVisualizerProps> = ({
   }, [currentTime, duration]);
 
   return (
-    <div className={`w-full my-6 text-center ${permanentMarker.className}`}>
+    <div
+      className={`w-full my-6 text-center text-black ${permanentMarker.className}`}
+    >
       <p>{formatTime(currentTime)}</p>
       <p
         className={`text-3xl ${

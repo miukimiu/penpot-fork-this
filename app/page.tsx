@@ -3,7 +3,7 @@ import NextImage from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center min-h-screen bg-custom-gradient">
+    <main className="flex flex-col items-center min-h-screen bg-white bg-custom-gradient">
       <header className="w-full text-gray-700 bg-white shadow-sm body-font">
         <div className="container flex flex-row items-center p-2 mx-auto place-content-between">
           <div className="flex">
