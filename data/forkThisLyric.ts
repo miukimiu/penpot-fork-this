@@ -1,4 +1,4 @@
-export const lyrics = [
+export const forkThisLyric = [
   {
     start: 0,
     lyric: "[MUSIC PLAYING]",
